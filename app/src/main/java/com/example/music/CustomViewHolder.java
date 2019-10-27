@@ -1,29 +1,24 @@
 package com.example.music;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.IOException;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public class CustomViewHolder extends RecyclerView.ViewHolder {
 
     TextView tvArtistName, tvCollectionName, tvTrackPrice;
     ImageView imageView;
-    Bitmap bitmap;
+    String previewUrl;
+    String image;
     String TAG;
-
+    CardView cardView;
 
 
     public CustomViewHolder(@NonNull View itemView) {
@@ -32,21 +27,21 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
         tvCollectionName = itemView.findViewById(R.id.tv_music_title);
         tvTrackPrice = itemView.findViewById(R.id.tv_price);
         imageView = itemView.findViewById(R.id.iv_image);
+        cardView = itemView.findViewById(R.id.cardview);
     }
-        public void bindItem(final MusicInfoDetails item) {
+        public void bindItem(final MusicInfoDetails item, final ActivityListener listener) {
+            previewUrl = item.getPreviewUrl();
+            image = item.getArtworkUrl100();
+
             tvArtistName.setText(item.getArtistName());
             tvCollectionName.setText(item.getCollectionName());
-            tvTrackPrice.setText(Double.toString(item.getTrackPrice()));
+            tvTrackPrice.setText("$ "+ (Double.toString(item.getTrackPrice())));
 
-            imageView.setOnClickListener(new View.OnClickListener() {
+            cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-//
-                    Log.d(TAG, "onClick: Clicked");
-                }
-
-                private void startActivity(Intent intent) {
+                    listener.previewMusic(item);
+                    Log.d(TAG, "onClick: clicked");
                 }
             });
         }

@@ -4,19 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/MusicCard">
+    style="@style/MusicCard"
+    android:id="@+id/cardview">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="6dp">
 
         <ImageView
             android:id="@+id/iv_image"
-            android:src="@mipmap/ic_launcher_round"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"
+            android:layout_margin="6dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_music_title"
@@ -25,27 +28,29 @@
             android:layout_marginLeft="6dp"
             app:layout_constraintStart_toEndOf="@+id/iv_image"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Music Title"/>
+            tools:text="Music Title"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tv_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
             android:layout_marginLeft="6dp"
+            android:layout_marginTop="6dp"
             app:layout_constraintStart_toEndOf="@+id/iv_image"
             app:layout_constraintTop_toBottomOf="@+id/tv_music_title"
-            tools:text="Artist Name"/>
+            tools:text="Artist Name" />
 
         <TextView
             android:id="@+id/tv_price"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_image"
-            app:layout_constraintBottom_toBottomOf="@id/iv_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="1.49 USD"
-            android:layout_marginRight="6dp"/>
+            android:layout_marginRight="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_image"
+            tools:text="1.49 USD" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

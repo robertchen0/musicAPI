@@ -58,7 +58,7 @@ public class FragmentResult extends Fragment {
                 getActivity(),
                 DividerItemDecoration.HORIZONTAL
         ));
-        adapter.setDataSet(dataSet);
+        adapter.setDataSet(dataSet, (ActivityListener) getActivity());
         recyclerView.setAdapter(adapter);
     }
 

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -13,6 +14,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ActivityListener{
     TabItem rock_tab, classic_tab, pop_tab;
     TabLayout tabLayout;
     ViewPager simpleViewPager;
@@ -94,6 +96,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void previewMusic(MusicInfoDetails item) {
+        Intent intent = new Intent();
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(item.getPreviewUrl()), "audio/*");
+        startActivity(intent);
+
+    }
+
     class MusicQuery extends AsyncTask<Void, Void, MusicInfoPojo>{
 
         @Override
@@ -112,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(MusicInfoPojo s) {
             super.onPostExecute(s);
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -158,6 +171,12 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 musicInfoDetails.setArtworkUrl100("");
+            }
+            if(firstItem.has("previewUrl")){
+                musicInfoDetails.setPreviewUrl(firstItem.getString("previewUrl"));
+            }
+            else{
+                musicInfoDetails.setPreviewUrl("");
             }
 
             ItemDetails itemDetails = new ItemDetails();
@@ -213,5 +232,40 @@ public class MainActivity extends AppCompatActivity {
             return null;
 
         return builder.toString();
+    }
+    class DownloadImage extends AsyncTask<Void, Void, Bitmap>{
+
+        String url;
+        DownloadImage(String url){
+            this.url = url;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... voids) {
+            Bitmap bitmap = null;
+            try {
+
+                URL downloadUrl = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) downloadUrl.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setConnectTimeout(15000);
+                connection.setReadTimeout(10000);
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream is = connection.getInputStream();
+                bitmap = BitmapFactory.decodeStream(is);
+
+            } catch (MalformedURLException urlException){
+                urlException.printStackTrace();
+            } catch (IOException ioException){
+                ioException.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+        }
     }
 }

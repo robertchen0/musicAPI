@@ -8,6 +8,15 @@ public class MusicInfoDetails implements Parcelable {
     private String collectionName;
     private Double trackPrice;
     private String artworkUrl100;
+    private String previewUrl;
+
+    public String getPreviewUrl() {
+        return previewUrl;
+    }
+
+    public void setPreviewUrl(String previewUrl) {
+        this.previewUrl = previewUrl;
+    }
 
     public MusicInfoDetails(){
 
@@ -50,6 +59,7 @@ public class MusicInfoDetails implements Parcelable {
         collectionName = in.readString();
         trackPrice = in.readDouble();
         artworkUrl100 = in.readString();
+        previewUrl = in.readString();
     }
 
     public static final Creator<MusicInfoDetails> CREATOR = new Creator<MusicInfoDetails>() {
@@ -75,5 +85,6 @@ public class MusicInfoDetails implements Parcelable {
         dest.writeString(collectionName);
         dest.writeDouble(trackPrice);
         dest.writeString(artworkUrl100);
+        dest.writeString(previewUrl);
     }
 }
